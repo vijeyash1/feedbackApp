@@ -7,14 +7,18 @@ import { useState } from "react";
 function App() {
   const [data, setdata] = useState(FeedbackData);
 
-  const deleteFeedback = (e) => {
-    console.log(e);
+  const deleteFeedback = (id) => {
+    if (window.confirm("Are You Sure You Want To Delete!!!")) {
+      setdata(data.filter((res) => res.id !== id));
+    }
   };
   return (
-    <div className="App">
+    <>
       <Header />
-      <FeedBackList feedback={data} handleDelete={deleteFeedback} />
-    </div>
+      <div className="container">
+        <FeedBackList feedback={data} handleDelete={deleteFeedback} />
+      </div>
+    </>
   );
 }
 
