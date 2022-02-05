@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+const date = new Date().toDateString();
 function Header({ text, bgColor, textColor }) {
   const headerStyles = {
     backgroundColor: bgColor,
     color: textColor,
   };
+
   return (
     <header style={headerStyles}>
       <div className="container">
@@ -15,7 +16,7 @@ function Header({ text, bgColor, textColor }) {
   );
 }
 Header.defaultProps = {
-  text: "Tasks Assingned For Today",
+  text: `Tasks Assingned For ${date}`,
   bgColor: "rgba(0,0,0,0.4)",
   textColor: "#ff6a95",
 };
