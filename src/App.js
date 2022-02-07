@@ -1,48 +1,39 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/header";
-import { v4 as uuidv4 } from "uuid";
-import FeedbackData from "./components/FeedbackData";
 import FeedBackList from "./components/FeedBackList";
-import { useState } from "react";
 import FeedbackStats from "./components/FeedbackStats";
 import FeedbackForm from "./components/FeedbackForm";
 import Aboutpage from "./pages/Aboutpage";
+import Abouticonlink from "./components/Abouticonlink";
+import { FeedbackProvider } from "./context/FeedbackContext";
+
 function App() {
-  const [data, setdata] = useState(FeedbackData);
-  const addfeedback = (e) => {
-    e.id = uuidv4();
-    setdata([e, ...data]);
-    console.log(data);
-  };
-
-  const deleteFeedback = (id) => {
-    if (window.confirm("Are You Sure You Want To Delete!!!")) {
-      setdata(data.filter((res) => res.id !== id));
-    }
-  };
   return (
-    <Router>
-      <Header />
+    <FeedbackProvider>
+      <Router>
+        <Header />
 
-      <div className="container">
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <>
-                <FeedbackForm handleadd={addfeedback} />
-                <FeedbackStats feedback={data} />
-                <FeedBackList feedback={data} handleDelete={deleteFeedback} />
-              </>
-            }
-          />
+        <div className="container">
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={
+                <>
+                  <FeedbackForm />
+                  <FeedbackStats />
+                  <FeedBackList />
+                </>
+              }
+            />
 
-          <Route path="/about" element={<Aboutpage />} />
-        </Routes>
-      </div>
-    </Router>
+            <Route path="/about" element={<Aboutpage />} />
+          </Routes>
+          <Abouticonlink />
+        </div>
+      </Router>
+    </FeedbackProvider>
   );
 }
 
