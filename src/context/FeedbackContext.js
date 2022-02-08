@@ -1,25 +1,9 @@
-import { createContext, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { createContext, useState, useEffect } from "react";
 const FeedbackContext = createContext();
 
 export const FeedbackProvider = ({ children }) => {
-  const [feedback, setfeedback] = useState([
-    {
-      id: "stringid1",
-      text: "this data comes from the use context provider 1",
-      rating: 10,
-    },
-    {
-      id: "stringid2",
-      text: "this data comes from the use context provider 2",
-      rating: 8,
-    },
-    {
-      id: "stringid3",
-      text: "this data comes from the use context provider 3",
-      rating: 6,
-    },
-  ]);
+  const [isLoading, setisLoading] = useState(true);
+  const [feedback, setfeedback] = useState([]);
   const [feedbackedit, setfeedbackedit] = useState({
     item: {},
     edit: false,
@@ -34,16 +18,34 @@ export const FeedbackProvider = ({ children }) => {
       feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
     );
   };
-  const addfeedback = (e) => {
-    e.id = uuidv4();
-    setfeedback([e, ...feedback]);
-    console.log(feedback);
+  const addfeedback = async (newFeedback) => {
+    const response = await fetch("/feedback", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newFeedback),
+    });
+
+    const data = await response.json();
+
+    setfeedback([data, ...feedback]);
   };
+
   const editFeedback = (item) => {
     setfeedbackedit({
       item,
       edit: true,
     });
+  };
+  useEffect(() => {
+    fetchFeedback();
+  }, []);
+  const fetchFeedback = async () => {
+    const response = await fetch(`/feedback?_sort=id&_order=desc`);
+    const data = await response.json();
+    setfeedback(data);
+    setisLoading(false);
   };
   return (
     <FeedbackContext.Provider
@@ -54,6 +56,7 @@ export const FeedbackProvider = ({ children }) => {
         editFeedback,
         feedbackedit,
         updateEditFeedback,
+        isLoading,
       }}
     >
       {children}
