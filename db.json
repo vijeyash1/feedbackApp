@@ -31,19 +31,9 @@
       "text": "this is text coming from backend 6"
     },
     {
-      "rating": "5",
-      "text": "this is a posted data from backend",
-      "id": 7
-    },
-    {
-      "text": "this is a new task",
+      "text": "this is a posted data from json server",
       "rating": 4,
-      "id": 8
-    },
-    {
-      "text": "this is another new task",
-      "rating": 8,
-      "id": 9
+      "id": 7
     }
   ]
 }
